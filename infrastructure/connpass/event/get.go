@@ -31,23 +31,27 @@ func addUrlVal(urlVal url.Values, value []int) func(string) {
 	}
 }
 
-func buildParam(param map[string]interface{}) string {
+type Param map[string]interface{}
+
+func createBuildParam(param Param) func() string {
 	values := url.Values{}
 
-	for key, value := range param {
-		switch key {
-		case "ymdList":
-			addUrlVal(values, value.([]int))("ymd")
-		case "ymList":
-			addUrlVal(values, value.([]int))("ym")
-		case "keyword":
-			if value.(string) != "" { // ゼロ値だったら（指定していなければ）addしない
-				values.Add(key, value.(string))
+	return func() string {
+		for key, value := range param {
+			switch key {
+			case "ymdList":
+				addUrlVal(values, value.([]int))("ymd")
+			case "ymList":
+				addUrlVal(values, value.([]int))("ym")
+			case "keyword":
+				if value.(string) != "" { // keyword指定していなければ（ゼロ値だったら）addしない
+					values.Add(key, value.(string))
+				}
 			}
 		}
-	}
 
-	return values.Encode()
+		return values.Encode()
+	}
 }
 
 func Get(reqParam ReqParam) Res {
@@ -56,8 +60,9 @@ func Get(reqParam ReqParam) Res {
 		"ymList":  reqParam.YmList,
 		"ymdList": reqParam.YmdList,
 	}
+	buildParam := createBuildParam(param)
 
-	res, err := request.Get("/event/", buildParam, param)
+	res, err := request.Get("/event/", buildParam)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,7 +1,6 @@
 package request
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -20,19 +19,14 @@ func New(baseUrl string) (*Client, error) {
 
 func (c *Client) Get(
 	path string,
-	buildParamfun func (map[string]interface{}) string,
-) func(param map[string]interface{}) ([]byte, error) {
+	buildParam func() string,
+) ([]byte, error) {
 	url := c.BaseURL + path
 
 	req, _ := http.NewRequest("GET", url, nil)
+	req.URL.RawQuery = buildParam()
 
-	return func(param map[string]interface{}) ([]byte, error)  {
-		req.URL.RawQuery = buildParamfun(param)
-
-		fmt.Println(req.URL.RawQuery)
-
-		return c.request(req)
-	}
+	return c.request(req)
 }
 
 func (c *Client) request(req *http.Request) ([]byte, error) {

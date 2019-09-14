@@ -10,15 +10,14 @@ type Params map[string]interface{}
 
 func Get(
 	path string,
-	buildParamfun func(map[string]interface{}) string,
-	param Params) ([]byte, error,
-) {
+	buildParam func() string,
+) ([]byte, error) {
 	request, err := Request.New("https://connpass.com/api/v1")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	res, err := request.Get(path, buildParamfun)(param)
+	res, err := request.Get(path, buildParam)
 	if err != nil {
 		log.Fatal(err)
 	}
