@@ -11,10 +11,10 @@ import (
 )
 
 type Res struct {
-	ResultsReturned  int                `json:results_returned`
-	ResultsStart     int                `json:results_start`
-	ResultsAvailable int                `json:results_available`
-	Events           []eventModel.Event `json:events`
+	ResultsReturned  int                `json:"results_returned"`
+	ResultsStart     int                `json:"results_start"`
+	ResultsAvailable int                `json:"results_available"`
+	Events           []eventModel.Event `json:"events"`
 }
 
 type ReqParam struct {
@@ -47,6 +47,8 @@ func createBuildParam(param Param) func() string {
 				if value.(string) != "" { // keyword指定していなければ（ゼロ値だったら）addしない
 					values.Add(key, value.(string))
 				}
+			case "count":
+				values.Add(key, value.(string))
 			}
 		}
 
@@ -59,6 +61,7 @@ func Get(reqParam ReqParam) Res {
 		"keyword": reqParam.Keyword,
 		"ymList":  reqParam.YmList,
 		"ymdList": reqParam.YmdList,
+		"count":   "100",
 	}
 	buildParam := createBuildParam(param)
 
