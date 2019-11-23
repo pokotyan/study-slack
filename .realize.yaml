@@ -1,0 +1,28 @@
+settings:
+  legacy:
+    force: false
+    interval: 0s
+server:
+  status: false
+  open: false
+  port: 7777
+  host: localhost
+schema:
+  - name: connpass-map-api
+    path: .
+    commands:
+      install:
+        status: true
+        method: go build -o ./main
+      run:
+        status: true
+        method: ./main
+    watcher:
+      extensions:
+        - go
+      paths:
+        - /
+      ignored_paths:
+        - .git
+        - .realize
+        - vendor
