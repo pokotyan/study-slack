@@ -27,13 +27,12 @@ jobs:
           key: go-modules-cache-v1-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
-      # - run: go get -u golang.org/x/lint/golint
-      # - run: golint ./...
 
   lint:
     executor:
       name: default
     steps:
+      - checkout
       - run: go get -u golang.org/x/lint/golint
       - run: golint ./...
 
