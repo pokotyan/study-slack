@@ -27,12 +27,23 @@ jobs:
           key: go-modules-cache-v1-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
+      # - run: go get -u golang.org/x/lint/golint
+      # - run: golint ./...
+
+  lint:
+    executor:
+      name: default
+    steps:
+      - run: go get -u golang.org/x/lint/golint
       - run: golint ./...
 
 workflows:
   build_and_push:
     jobs:
       - build
+      - lint:
+          requires:
+            - build
       - aws-ecr/build_and_push_image:
           requires:
             - build
