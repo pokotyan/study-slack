@@ -2,7 +2,7 @@
 FROM golang:alpine as builder
 
 RUN apk update \
-  && apk add git \
+  && apk add --no-cache git \
   && go get github.com/oxequa/realize
 
 RUN mkdir /app
