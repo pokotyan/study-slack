@@ -27,12 +27,18 @@ jobs:
           key: go-modules-cache-v1-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "*"
+            - ".*"
 
   lint:
     executor:
       name: default
     steps:
-      - checkout
+      - attach_workspace:
+          at: /go/src/github.com/pokotyan/connpass-map-api
       - run: golint ./...
 
 workflows:
