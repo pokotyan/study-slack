@@ -27,6 +27,7 @@ jobs:
           key: go-modules-cache-v1-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
+      - setup_remote_docker
       - run: docker build -t connpass-map-api .
 
   lint:
