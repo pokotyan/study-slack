@@ -28,10 +28,20 @@ jobs:
           paths:
             - "/go/pkg/mod"
 
+  lint:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - run: golint ./...
+
 workflows:
   build_and_push:
     jobs:
       - build
+      - lint
+          requires:
+            - build
       - aws-ecr/build_and_push_image:
           requires:
             - build

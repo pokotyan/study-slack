@@ -58,12 +58,16 @@ require (
 	github.com/valyala/fasttemplate v1.1.0 // indirect
 	github.com/vsouza/go-gin-boilerplate v0.0.0-20190322135653-d365c3eed614
 	go.etcd.io/bbolt v1.3.3 // indirect
-	golang.org/x/crypto v0.0.0-20190820162420-60c769a6c586 // indirect
+	golang.org/x/crypto v0.0.0-20191122220453-ac88ee75c92c // indirect
 	golang.org/x/image v0.0.0-20190823064033-3a9bac650e44 // indirect
+	golang.org/x/lint v0.0.0-20190930215403-16217165b5de // indirect
 	golang.org/x/mobile v0.0.0-20190814143026-e8b3e6111d02 // indirect
-	golang.org/x/net v0.0.0-20190813141303-74dc4d7220e7
+	golang.org/x/net v0.0.0-20191119073136-fc4aabc6c914
+	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
+	golang.org/x/sys v0.0.0-20191120155948-bd437916bb0e // indirect
 	golang.org/x/text v0.3.2
-	golang.org/x/tools v0.0.0-20190823093517-aa644d2adf2a // indirect
+	golang.org/x/tools v0.0.0-20191124021906-f5828fc9a103 // indirect
+	golang.org/x/xerrors v0.0.0-20191011141410-1b5146add898 // indirect
 	google.golang.org/api v0.9.0
 	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect
 	google.golang.org/grpc v1.23.0 // indirect
