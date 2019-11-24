@@ -10,7 +10,6 @@ jobs:
       GOPATH: /
       GOCACHE: /.cache/go-build
     steps:
-      - run: go env
       - checkout
       - restore_cache:
           keys:
