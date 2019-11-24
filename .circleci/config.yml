@@ -4,12 +4,11 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/golang:latest
+      - image: circleci/golang:1.13
     working_directory: /go/src/github.com/pokotyan/connpass-map-api
     steps:
       - checkout
       - run: go mod download
-      # - run: go get -v -t -d ./...
 
 workflows:
   build_and_push:
