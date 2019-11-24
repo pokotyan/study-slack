@@ -39,6 +39,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /go/src/github.com/pokotyan/connpass-map-api
+      - checkout
       - run: golint ./...
 
 workflows:
