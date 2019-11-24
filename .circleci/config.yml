@@ -42,9 +42,7 @@ workflows:
   build_and_push:
     jobs:
       - build
-      - lint:
-          requires:
-            - build
+      - lint
       - aws-ecr/build_and_push_image:
           requires:
             - build
