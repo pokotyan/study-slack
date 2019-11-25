@@ -10,3 +10,9 @@ services:
     command: realize start --server
     ports:
       - 7777:7777
+  nginx:
+    build: nginx
+    ports:
+      - 80:80
+    depends_on:
+      - app

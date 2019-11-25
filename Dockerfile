@@ -5,7 +5,6 @@ RUN apk update \
   && apk add --no-cache git \
   && go get github.com/oxequa/realize
 
-RUN mkdir /app
 WORKDIR /app
 COPY go.mod .
 COPY go.sum .
