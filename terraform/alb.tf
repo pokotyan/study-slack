@@ -134,47 +134,47 @@ resource "aws_lb_listener" "redirect_http_to_https" {
   }
 }
 
-# # ターゲットグループ
-# resource "aws_lb_target_group" "connpass-map" {
-#   name                 = "connpass-map"
-#   target_type          = "ip" # ターゲットグループにfargateを紐付ける場合はip
-#   vpc_id               = aws_vpc.connpass-map.id
-#   port                 = 80
-#   protocol             = "HTTP" # httpsの終端はalbなので、ターゲットグループ内はhttp
-#   deregistration_delay = 300
+# ターゲットグループ
+resource "aws_lb_target_group" "connpass-map" {
+  name                 = "connpass-map"
+  target_type          = "ip" # ターゲットグループにfargateを紐付ける場合はip
+  vpc_id               = aws_vpc.connpass-map.id
+  port                 = 80
+  protocol             = "HTTP" # httpsの終端はalbなので、ターゲットグループ内はhttp
+  deregistration_delay = 300
 
-#   health_check {
-#     path                = "/"
-#     healthy_threshold   = 5
-#     unhealthy_threshold = 2
-#     timeout             = 5
-#     interval            = 30
-#     matcher             = 200
-#     port                = "traffic-port"
-#     protocol            = "HTTP"
-#   }
+  health_check {
+    path                = "/status"
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+    matcher             = 200
+    port                = "traffic-port"
+    protocol            = "HTTP"
+  }
 
-#   depends_on = [aws_lb.connpass-map] # ターゲットグループはalbが作成できてから作成
-# }
+  depends_on = [aws_lb.connpass-map] # ターゲットグループはalbが作成できてから作成
+}
 
-# # ターゲットグループにリクエストをフォワードするリスナー。
-# # 84行目でhttpsリスナーを作成しているが、そのhttpsリスナーに以下のルールを追加。
-# # 「パスが /* だったらターゲットグループに転送」
-# # これによりhttpsリスナーのデフォルトアクションは無効化（デフォルトアクションは一番優先度が低い）される。
-# resource "aws_lb_listener_rule" "connpass-map" {
-#   listener_arn = aws_lb_listener.https.arn
-#   priority     = 100
+# ターゲットグループにリクエストをフォワードするリスナー。
+# 84行目でhttpsリスナーを作成しているが、そのhttpsリスナーに以下のルールを追加。
+# 「パスが /* だったらターゲットグループに転送」
+# これによりhttpsリスナーのデフォルトアクションは無効化（デフォルトアクションは一番優先度が低い）される。
+resource "aws_lb_listener_rule" "connpass-map" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 100
 
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.connpass-map.arn
-#   }
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.connpass-map.arn
+  }
 
-#   condition {
-#     field  = "path-pattern"
-#     values = ["/*"]
-#   }
-# }
+  condition {
+    field  = "path-pattern"
+    values = ["/*"]
+  }
+}
 
 output "alb_dns_name" {
   value = aws_lb.connpass-map.dns_name

@@ -43,15 +43,15 @@ workflows:
     jobs:
       - build
       - lint
-      - aws-ecr/build_and_push_image:
-          requires:
-            - build
-          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-          repo: "connpass-map-api"
-          region: ${AWS_DEFAULT_REGION}
-          tag: "${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only:
-                - /feature.*/
-                - master
+      # - aws-ecr/build_and_push_image:
+      #     requires:
+      #       - build
+      #     account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+      #     repo: "connpass-map-api"
+      #     region: ${AWS_DEFAULT_REGION}
+      #     tag: "${CIRCLE_SHA1}"
+      #     filters:
+      #       branches:
+      #         only:
+      #           - /feature.*/
+      #           - master

@@ -1,6 +1,6 @@
 run:
 	go run main.go
 start:
-	realize start --server
+	docker-compose -f docker-compose.dev.yml up
 lint:
 	golint ./...
