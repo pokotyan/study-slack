@@ -29,7 +29,7 @@ jobs:
             - "/go/pkg/mod"
       - setup_remote_docker
       - run: docker build -t connpass-map-api .
-
+      - run: docker build -t connpass-map-api_nginx ./nginx
   lint:
     executor:
       name: default
@@ -43,15 +43,29 @@ workflows:
     jobs:
       - build
       - lint
-      # - aws-ecr/build_and_push_image:
-      #     requires:
-      #       - build
-      #     account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-      #     repo: "connpass-map-api"
-      #     region: ${AWS_DEFAULT_REGION}
-      #     tag: "${CIRCLE_SHA1}"
-      #     filters:
-      #       branches:
-      #         only:
-      #           - /feature.*/
-      #           - master
+      - aws-ecr/build_and_push_image:
+          requires:
+            - build
+          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+          repo: "connpass-map-api-app"
+          region: ${AWS_DEFAULT_REGION}
+          tag: latest
+          path: .
+          filters:
+            branches:
+              only:
+                - /feature.*/
+                - master
+      - aws-ecr/build_and_push_image:
+          requires:
+            - build
+          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+          repo: "connpass-map-api-nginx"
+          region: ${AWS_DEFAULT_REGION}
+          tag: latest
+          path: ./nginx
+          filters:
+            branches:
+              only:
+                - /feature.*/
+                - master
