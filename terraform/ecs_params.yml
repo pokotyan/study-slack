@@ -5,6 +5,7 @@ task_definition:
   task_size:
     cpu_limit: "2048"
     mem_limit: "8GB"
+  # @todo コンテナのヘルスチェックを通す
   # services:
   #   app:
   #     healthcheck:
