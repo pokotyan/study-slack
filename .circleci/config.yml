@@ -35,20 +35,20 @@ jobs:
       - checkout
       - run: go get -u golang.org/x/lint/golint
       - run: golint ./...
-  aws-ecr/build-and-push-image:
-    parameters:
-      aws-access-key-id:
-        type: env_var_name
-        default: AWS_ACCESS_KEY_ID
-      aws-secret-access-key:
-        type: env_var_name
-        default: AWS_SECRET_ACCESS_KEY
-      account-url:
-        type: env_var_name
-        default: AWS_ECR_ACCOUNT_URL
-      region:
-        type: env_var_name
-        default: AWS_REGION
+  # aws-ecr/build-and-push-image:
+  #   parameters:
+  #     aws-access-key-id:
+  #       type: env_var_name
+  #       default: AWS_ACCESS_KEY_ID
+  #     aws-secret-access-key:
+  #       type: env_var_name
+  #       default: AWS_SECRET_ACCESS_KEY
+  #     account-url:
+  #       type: env_var_name
+  #       default: AWS_ECR_ACCOUNT_URL
+  #     region:
+  #       type: env_var_name
+  #       default: AWS_REGION
 workflows:
   build_and_push:
     jobs:
@@ -57,9 +57,9 @@ workflows:
       - aws-ecr/build-and-push-image:
           requires:
             - build
-          account-url: ${<< parameters.account-url >>}
+          account-url: ${AWS_ECR_ACCOUNT_URL}
           repo: "connpass-map-api-app"
-          region: ${<< parameters.region >>}
+          region: ${AWS_REGION}
           tag: latest
           path: .
           filters:
@@ -70,9 +70,9 @@ workflows:
       - aws-ecr/build-and-push-image:
           requires:
             - build
-          account-url: ${<< parameters.account-url >>}
+          account-url: ${AWS_ECR_ACCOUNT_URL}
           repo: "connpass-map-api-nginx"
-          region: ${<< parameters.region >>}
+          region: ${AWS_REGION}
           tag: latest
           path: ./nginx
           filters:
