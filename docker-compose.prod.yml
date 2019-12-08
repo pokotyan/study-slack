@@ -1,7 +1,6 @@
 version: "3"
 
 # image今latestタグを使っているが、commitのsha1をタグとして使うようにして、それを環境変数で読むようにしたい。
-# todo: circle ciで二つのイメージをecrにアップさせる。
 # todo: 環境変数を使ってlatestではなく、sha1を見させるように変更
 services:
   app:
