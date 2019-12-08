@@ -1,0 +1,22 @@
+version: 1
+task_definition:
+  task_execution_role: ecs-task-execution
+  ecs_network_mode: awsvpc
+  task_size:
+    cpu_limit: "2048"
+    mem_limit: "8GB"
+  services:
+    app:
+      healthcheck:
+        test: ["CMD-SHELL", "curl localhost:7777/status || exit 1"]
+run_params:
+  network_configuration:
+    awsvpc_configuration:
+      subnets:
+        # private security group
+        - subnet-0295dde64c3f9704d
+        - subnet-0b7c1632eab3af15c
+      security_groups:
+        # ecs_service_sg
+        - sg-0eda8d437c5f399ba
+      assign_public_ip: ENABLED

@@ -1,14 +1,12 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@0.0.2
-
+  aws-ecr: circleci/aws-ecr@6.5.0
 executors:
   default:
     docker:
       - image: circleci/golang:1.13
     working_directory: /go/src/github.com/pokotyan/connpass-map-api
-
 jobs:
   build:
     executor:
@@ -29,7 +27,7 @@ jobs:
             - "/go/pkg/mod"
       - setup_remote_docker
       - run: docker build -t connpass-map-api .
-
+      - run: docker build -t connpass-map-api_nginx ./nginx
   lint:
     executor:
       name: default
@@ -37,19 +35,32 @@ jobs:
       - checkout
       - run: go get -u golang.org/x/lint/golint
       - run: golint ./...
-
 workflows:
   build_and_push:
     jobs:
       - build
       - lint
-      - aws-ecr/build_and_push_image:
+      - aws-ecr/build-and-push-image:
           requires:
             - build
-          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-          repo: "connpass-map-api"
-          region: ${AWS_DEFAULT_REGION}
-          tag: "${CIRCLE_SHA1}"
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: "connpass-map-api-app"
+          region: AWS_REGION
+          tag: latest
+          path: .
+          filters:
+            branches:
+              only:
+                - /feature.*/
+                - master
+      - aws-ecr/build-and-push-image:
+          requires:
+            - build
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: "connpass-map-api-nginx"
+          region: AWS_REGION
+          tag: latest
+          path: ./nginx
           filters:
             branches:
               only:

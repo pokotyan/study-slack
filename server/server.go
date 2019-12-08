@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	routes "github.com/pokotyan/connpass-map-api/routes"
 )
 
@@ -12,7 +12,7 @@ func Init() {
 	router.Use(gin.Recovery())
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
 
 	routes.Init(router)
