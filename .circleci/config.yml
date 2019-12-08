@@ -43,9 +43,9 @@ workflows:
       - aws-ecr/build-and-push-image:
           requires:
             - build
-          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
           repo: "connpass-map-api-app"
-          region: ${AWS_DEFAULT_REGION}
+          region: ${AWS_REGION}
           tag: latest
           path: .
           filters:
@@ -56,9 +56,9 @@ workflows:
       - aws-ecr/build-and-push-image:
           requires:
             - build
-          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
           repo: "connpass-map-api-nginx"
-          region: ${AWS_DEFAULT_REGION}
+          region: ${AWS_REGION}
           tag: latest
           path: ./nginx
           filters:
