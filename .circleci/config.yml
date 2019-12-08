@@ -1,14 +1,12 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@0.0.2
-
+  aws-ecr: circleci/aws-ecr@6.5.0
 executors:
   default:
     docker:
       - image: circleci/golang:1.13
     working_directory: /go/src/github.com/pokotyan/connpass-map-api
-
 jobs:
   build:
     executor:
@@ -37,7 +35,6 @@ jobs:
       - checkout
       - run: go get -u golang.org/x/lint/golint
       - run: golint ./...
-
 workflows:
   build_and_push:
     jobs:
