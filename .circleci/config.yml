@@ -60,6 +60,7 @@ workflows:
           repo: "connpass-map-api-nginx"
           region: AWS_REGION
           tag: latest
+          dockerfile: ./nginx/Dockerfile
           path: ./nginx
           filters:
             branches:
