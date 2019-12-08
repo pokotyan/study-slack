@@ -3,8 +3,8 @@ task_definition:
   task_execution_role: ecs-task-execution
   ecs_network_mode: awsvpc
   task_size:
-    cpu_limit: "2048"
-    mem_limit: "8GB"
+    cpu_limit: "256"
+    mem_limit: "0.5GB"
   # @todo コンテナのヘルスチェックを通す
   # services:
   #   app:
