@@ -46,7 +46,7 @@ workflows:
           account-url: AWS_ECR_ACCOUNT_URL
           repo: "connpass-map-api-app"
           region: AWS_REGION
-          tag: latest
+          tag: $CIRCLE_SHA1
           path: .
           filters:
             branches:
@@ -59,7 +59,7 @@ workflows:
           account-url: AWS_ECR_ACCOUNT_URL
           repo: "connpass-map-api-nginx"
           region: AWS_REGION
-          tag: latest
+          tag: $CIRCLE_SHA1
           dockerfile: ./nginx/Dockerfile
           path: ./nginx
           filters:
