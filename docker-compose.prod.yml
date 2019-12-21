@@ -4,11 +4,13 @@ version: "3"
 # todo: 環境変数を使ってlatestではなく、sha1を見させるように変更
 services:
   app:
-    image: 882275384674.dkr.ecr.ap-northeast-1.amazonaws.com/connpass-map-api-app:latest
+    image: "882275384674.dkr.ecr.ap-northeast-1.amazonaws.com/connpass-map-api-app:${SHA1}"
+    environment:
+      - API_VERSION="${SHA1}"
     ports:
       - 7777:7777
   nginx:
-    image: 882275384674.dkr.ecr.ap-northeast-1.amazonaws.com/connpass-map-api-nginx:latest
+    image: "882275384674.dkr.ecr.ap-northeast-1.amazonaws.com/connpass-map-api-nginx:${SHA1}"
     ports:
       - 80:80
     depends_on:
