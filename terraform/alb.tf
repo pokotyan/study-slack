@@ -157,6 +157,33 @@ resource "aws_lb_target_group" "connpass-map" {
   depends_on = [aws_lb.connpass-map] # ターゲットグループはalbが作成できてから作成
 }
 
+variable "domain" {
+  description = "connpass.net"
+  type        = "string"
+}
+
+# http => httpsにリダイレクトさせるリスナールール。これで、httpリスナーのdefault_actionを上書き
+resource "aws_lb_listener_rule" "http_to_https" {
+  listener_arn = aws_lb_listener.http.arn
+
+  priority = 100
+
+  action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["${var.domain}"]
+  }
+}
+
 # ターゲットグループにリクエストをフォワードするリスナー。
 # 84行目でhttpsリスナーを作成しているが、そのhttpsリスナーに以下のルールを追加。
 # 「パスが /* だったらターゲットグループに転送」
