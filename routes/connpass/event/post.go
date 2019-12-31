@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	conpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
+	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
 	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/event"
 )
 
@@ -22,13 +22,12 @@ func Post(c *gin.Context) {
 	var body Body
 	c.BindJSON(&body)
 
-	var param conpassEvent.ReqParam
+	var param connpassEvent.ReqParam
 	param.Keyword = body.Keyword
 	param.YmList = body.YmList
 	param.YmdList = body.YmdList
 
-	ce := conpassEvent.NewConnpassEvent()
-	u := usecase.NewConnpassEventImpl(ce)
+	u := usecase.AssignGetEventWithUsecase()
 	ctx := context.Background()
 	// ctx = context.WithValue(ctx, "tx", db)
 	res := u.GetEvent(ctx, param)

@@ -19,3 +19,10 @@ func (u connpassEventUsecaseImpl) GetEvent(ctx context.Context, param connpassEv
 
 	return res
 }
+
+func AssignGetEventWithUsecase() ConnpassEventUsecase {
+	ce := connpassEvent.NewConnpassEvent()
+	u := NewConnpassEventImpl(ce)
+
+	return u
+}
