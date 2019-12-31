@@ -1,6 +1,7 @@
 package event
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,11 @@ func Post(c *gin.Context) {
 	param.YmList = body.YmList
 	param.YmdList = body.YmdList
 
-	res := usecase.GetEvent(param)
+	ce := conpassEvent.NewConnpassEvent()
+	u := usecase.NewConnpassEventImpl(ce)
+	ctx := context.Background()
+	// ctx = context.WithValue(ctx, "tx", db)
+	res := u.GetEvent(ctx, param)
 
 	c.JSON(http.StatusOK, res)
 }
