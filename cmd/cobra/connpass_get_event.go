@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
+	"unicode/utf8"
 
 	"github.com/spf13/cobra"
 
@@ -27,26 +29,54 @@ func newConnpassCmd() *cobra.Command {
 
 func newGetEventCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "keyword <Keyword>",
-		Short: "キーワードで検索",
+		Use:   "search (<yyyymm> | <yyyymmdd>) <keyword>",
+		Short: "キーワードで検索 ex: search 201209 python",
 		RunE:  getEvent,
+		Args:  cobra.MinimumNArgs(1),
 	}
 
 	return cmd
 }
 
+func setDate(reqParam *connpassEvent.ReqParam) func(arg string) {
+	return func(arg string) {
+		length := utf8.RuneCountInString(arg)
+		param, _ := strconv.Atoi(arg)
+
+		if length == 6 {
+			reqParam.YmList = []int{param}
+		}
+
+		if length == 8 {
+			reqParam.YmdList = []int{param}
+		}
+	}
+}
+
+func setKeyword(reqParam *connpassEvent.ReqParam) func(arg string) {
+	return func(arg string) {
+		reqParam.Keyword = arg
+	}
+}
+
 func getEvent(cmd *cobra.Command, args []string) error {
 	if len(args) == 0 {
-		return errors.New("keyword is required")
+		return errors.New("date is required")
 	}
 
 	u := usecase.AssignGetEventWithUsecase()
 	ctx := context.Background()
-	keyword := args[0]
+	reqParam := connpassEvent.ReqParam{}
+	setParamList := []func(arg string){setDate(&reqParam), setKeyword(&reqParam)}
 
-	res := u.GetEvent(ctx, connpassEvent.ReqParam{
-		Keyword: keyword,
-	})
+	for _, arg := range args {
+		setParam := setParamList[0]
+		_ = setParamList[1:]
+
+		setParam(arg)
+	}
+
+	res := u.GetEvent(ctx, reqParam)
 
 	fmt.Printf("%v", res)
 
