@@ -13,12 +13,12 @@ import (
 // curl -H "Content-type:application/json" "Accept:application/json" -d '{ "Keyword": "python", "YmList": [201209] }' -X POST http://localhost:7777/connpass/event | jq .
 
 type Body struct {
-	Keyword string `json:keyword`
-	YmList  []int  `json:ymList`
-	YmdList []int  `json:ymdList`
+	Keyword string `json:"keyword"`
+	YmList  []int  `json:"ymList"`
+	YmdList []int  `json:"ymdList"`
 }
 
-func Post(c *gin.Context) {
+func GetEvent(c *gin.Context) {
 	var body Body
 	c.BindJSON(&body)
 
@@ -27,7 +27,8 @@ func Post(c *gin.Context) {
 	param.YmList = body.YmList
 	param.YmdList = body.YmdList
 
-	u := usecase.AssignGetEventWithUsecase()
+	ce := connpassEvent.NewConnpassEvent()
+	u := usecase.NewConnpassEventImpl(ce)
 	ctx := context.Background()
 	// ctx = context.WithValue(ctx, "tx", db)
 	res := u.GetEvent(ctx, param)

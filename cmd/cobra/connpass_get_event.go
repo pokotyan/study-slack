@@ -64,7 +64,8 @@ func getEvent(cmd *cobra.Command, args []string) error {
 		return errors.New("date is required")
 	}
 
-	u := usecase.AssignGetEventWithUsecase()
+	ce := connpassEvent.NewConnpassEvent()
+	u := usecase.NewConnpassEventImpl(ce)
 	ctx := context.Background()
 	reqParam := connpassEvent.ReqParam{}
 	setParamList := []func(arg string){setDate(&reqParam), setKeyword(&reqParam)}

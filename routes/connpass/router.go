@@ -9,6 +9,7 @@ import (
 func Init(router *gin.Engine) {
 	connpass := router.Group("/connpass")
 	{
-		connpass.POST("/event", event.Post, middleware.Logging())
+		connpass.POST("/event", event.GetEvent, middleware.Logging())
+		connpass.POST("/slack", event.PostSlack, middleware.Logging())
 	}
 }
