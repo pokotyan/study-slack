@@ -11,6 +11,8 @@ import (
 	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/event"
 )
 
+// curl -H "Content-type:application/json" "Accept:application/json" -d '' -X POST http://localhost:7777/connpass/slack
+
 func PostSlack(c *gin.Context) {
 	// err := godotenv.Load()
 	// if err != nil {
