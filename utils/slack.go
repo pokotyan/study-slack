@@ -10,9 +10,9 @@ type Slack struct {
 	WebhookURL string
 }
 
-func NewSlack(webhookUrl string) (*Slack, error) {
+func NewSlack(webhookURL string) (*Slack, error) {
 	return &Slack{
-		WebhookURL: webhookUrl,
+		WebhookURL: webhookURL,
 	}, nil
 }
 

@@ -1,4 +1,4 @@
-package envRouter
+package envrouter
 
 import (
 	"github.com/gin-gonic/gin"

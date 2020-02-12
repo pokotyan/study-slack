@@ -1,4 +1,4 @@
-package connpassRouter
+package connpassrouter
 
 import (
 	"github.com/gin-gonic/gin"

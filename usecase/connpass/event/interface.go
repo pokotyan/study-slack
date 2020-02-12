@@ -9,7 +9,7 @@ import (
 type (
 	ConnpassEventUsecase interface {
 		GetEvent(ctx context.Context, param connpassEvent.ReqParam) connpassEvent.Res
-		PostSlack(ctx context.Context, webhookUrl string, nop int, searchRange int)
+		PostSlack(ctx context.Context, webhookURL string, nop int, searchRange int)
 	}
 	connpassEventUsecaseImpl struct {
 		connpassEvent connpassEvent.ConnpassEvent
