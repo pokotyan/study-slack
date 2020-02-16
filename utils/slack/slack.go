@@ -33,6 +33,7 @@ func GetSubmissionValue(message slack.InteractionCallback, id string) string {
 	return message.DialogSubmissionCallback.Submission[id]
 }
 
+// @todo slack-go-webhookじゃなくて、nlopes/slackでpostするようにする
 func (s Slack) SendToSlack(text string, sendable bool, setAttach func(attachment *slackWebHook.Attachment)) error {
 	attachment := slackWebHook.Attachment{}
 
@@ -40,7 +41,6 @@ func (s Slack) SendToSlack(text string, sendable bool, setAttach func(attachment
 
 	payload := slackWebHook.Payload{
 		Text:        text,
-		IconEmoji:   ":monkey_face:",
 		Attachments: []slackWebHook.Attachment{attachment},
 	}
 
