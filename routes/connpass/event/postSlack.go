@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
 	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/event"
+	slackUtils "github.com/pokotyan/connpass-map-api/utils/slack"
 )
 
 // curl -H "Content-type:application/json" "Accept:application/json" -d '' -X POST http://localhost:7777/connpass/slack
@@ -34,11 +35,12 @@ func PostSlack(c *gin.Context) {
 	nop, _ := strconv.Atoi(numOfPeople)
 
 	ce := connpassEvent.NewConnpassEvent()
-	u := usecase.NewPostSlackImpl(ce)
+	sl, _ := slackUtils.NewSlack(webhookURL)
+	u := usecase.NewPostSlackImpl(ce, sl)
 	ctx := context.Background()
 
 	if webhookURL != "" && searchRange != "" && numOfPeople != "" {
-		u.PostSlack(ctx, webhookURL, nop, sr)
+		u.PostSlack(ctx, nop, sr)
 	}
 
 	c.JSON(http.StatusOK, res)
