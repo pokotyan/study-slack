@@ -1,4 +1,4 @@
-package cmd
+package connpass
 
 import (
 	"context"
@@ -12,31 +12,6 @@ import (
 	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
 	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/event"
 )
-
-func newConnpassCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "connpass",
-		Short: "connpassの勉強会を検索",
-		RunE:  getEvent,
-	}
-
-	cmd.AddCommand(
-		newGetEventCmd(),
-	)
-
-	return cmd
-}
-
-func newGetEventCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "search (<yyyymm> | <yyyymmdd>) <keyword>",
-		Short: "キーワードで検索 ex: search 201209 python",
-		RunE:  getEvent,
-		Args:  cobra.MinimumNArgs(1),
-	}
-
-	return cmd
-}
 
 func setDate(reqParam *connpassEvent.ReqParam) func(arg string) {
 	return func(arg string) {
@@ -65,7 +40,7 @@ func getEvent(cmd *cobra.Command, args []string) error {
 	}
 
 	ce := connpassEvent.NewConnpassEvent()
-	u := usecase.NewConnpassEventImpl(ce)
+	u := usecase.NewGetEventImpl(ce)
 	ctx := context.Background()
 	reqParam := connpassEvent.ReqParam{}
 	setParamList := []func(arg string){setDate(&reqParam), setKeyword(&reqParam)}

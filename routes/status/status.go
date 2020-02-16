@@ -1,4 +1,4 @@
-package status
+package statusrouter
 
 import (
 	"net/http"

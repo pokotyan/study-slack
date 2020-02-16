@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/pokotyan/connpass-map-api/cmd/cobra/connpass"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +25,7 @@ func newRootCmd() *cobra.Command {
 }
 
 func init() {
-	rootCmd.AddCommand(newConnpassCmd())
+	rootCmd.AddCommand(connpass.NewConnpassCmd())
 }
 
 func Execute() {

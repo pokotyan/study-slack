@@ -1,20 +1,19 @@
-package event
+package connpass
 
 import (
 	"context"
-	"net/http"
+	"fmt"
 	"os"
 	"strconv"
 
-	"github.com/gin-gonic/gin"
+	"github.com/spf13/cobra"
+
 	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
 	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/event"
 	slackUtils "github.com/pokotyan/connpass-map-api/utils/slack"
 )
 
-// curl -H "Content-type:application/json" "Accept:application/json" -d '' -X POST http://localhost:7777/connpass/slack
-
-func PostSlack(c *gin.Context) {
+func postSlack(cmd *cobra.Command, args []string) error {
 	var res string
 
 	webhookURL := os.Getenv("WEB_HOOK_URL")
@@ -43,5 +42,7 @@ func PostSlack(c *gin.Context) {
 		u.PostSlack(ctx, nop, sr)
 	}
 
-	c.JSON(http.StatusOK, res)
+	fmt.Printf("%v", res)
+
+	return nil
 }
