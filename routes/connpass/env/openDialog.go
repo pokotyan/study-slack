@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/nlopes/slack"
 
 	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/env"
@@ -26,12 +25,6 @@ type Payload struct {
 }
 
 func OpenDialog(c *gin.Context) {
-	err := godotenv.Load()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, nil)
-		return
-	}
-
 	slackToken := os.Getenv("SLACK_TOKEN")
 	if slackToken == "" {
 		c.JSON(http.StatusInternalServerError, nil)
@@ -41,9 +34,14 @@ func OpenDialog(c *gin.Context) {
 	var body Payload
 	c.Bind(&body)
 
-	var slackClient = slack.New(slackToken)
+	slackClient := slack.New(slackToken)
 	u := usecase.NewOpenDialogImpl(slackClient)
-	u.OpenDialog(c, body.UserID, body.TriggerID)
+	err := u.OpenDialog(c, body.UserID, body.TriggerID)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, nil)
+		return
+	}
 
 	return
 }

@@ -44,12 +44,14 @@ func makeDialog(userID string) *slack.Dialog {
 	}
 }
 
-func (u connpassEnvUsecaseImpl) OpenDialog(ctx context.Context, userID string, triggerID string) {
+func (u connpassEnvUsecaseImpl) OpenDialog(ctx context.Context, userID string, triggerID string) error {
 	dialog := makeDialog(userID)
 
 	if err := u.slackClient.OpenDialog(triggerID, *dialog); err != nil {
 		fmt.Println(err)
 
-		return
+		return err
 	}
+
+	return nil
 }
