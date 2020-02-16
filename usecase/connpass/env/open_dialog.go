@@ -31,14 +31,14 @@ func makeDialog(userID string) *slack.Dialog {
 				Type:        slack.InputTypeText,
 				Name:        "SEARCH_RANGE",
 				Placeholder: os.Getenv("SEARCH_RANGE"),
-				Hint:        "数字。どのくらい先までの勉強会を通知するか。7にすると１週間先までの勉強会を通知",
+				Hint:        "数字（日数）。どのくらい先までの勉強会を通知するか。7にすると１週間先までの勉強会を通知",
 			},
 			slack.DialogInput{
 				Label:       "最低参加人数",
 				Type:        slack.InputTypeText,
 				Name:        "NUM_OF_PEOPLE",
 				Placeholder: os.Getenv("NUM_OF_PEOPLE"),
-				Hint:        "数字。100にすると参加人数が100人以上の勉強会のみ通知",
+				Hint:        "数字（人数）。100にすると参加人数が100人以上の勉強会のみ通知",
 			},
 		},
 	}

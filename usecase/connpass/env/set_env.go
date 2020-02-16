@@ -26,8 +26,13 @@ func SetEnv(ctx context.Context, rawBody string) []EnvError {
 		Errors = append(Errors, EnvError{Msg: "有効なURLではありません。", ID: "WEB_HOOK_URL"})
 	}
 
-	if _, err := strconv.Atoi(searchRange); err != nil {
+	sr, err := strconv.Atoi(searchRange)
+	if err != nil {
 		Errors = append(Errors, EnvError{Msg: "数字で入力してください。", ID: "SEARCH_RANGE"})
+	}
+
+	if sr > 30 {
+		Errors = append(Errors, EnvError{Msg: "MAXは30日です。", ID: "SEARCH_RANGE"})
 	}
 
 	if _, err := strconv.Atoi(numOfPeople); err != nil {
