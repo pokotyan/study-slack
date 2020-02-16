@@ -5,22 +5,15 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/ashwanthkumar/slack-go-webhook"
 	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
-	"github.com/pokotyan/connpass-map-api/utils"
+	"github.com/pokotyan/connpass-map-api/utils/slack"
 )
 
-func NewConnpassEventImpl(connpassEvent connpassEvent.ConnpassEvent) ConnpassEventUsecase {
+func NewPostSlackImpl(connpassEvent connpassEvent.ConnpassEvent) ConnpassEventUsecase {
 	return &connpassEventUsecaseImpl{
 		connpassEvent: connpassEvent,
 	}
-}
-
-func (u connpassEventUsecaseImpl) GetEvent(ctx context.Context, param connpassEvent.ReqParam) connpassEvent.Res {
-	// @todo ctxにdbを含める
-
-	res := u.connpassEvent.Get(param)
-
-	return res
 }
 
 func (u connpassEventUsecaseImpl) PostSlack(ctx context.Context, webhookURL string, nop int, searchRange int) {
@@ -35,12 +28,15 @@ func (u connpassEventUsecaseImpl) PostSlack(ctx context.Context, webhookURL stri
 
 		param.YmdList = []int{fd}
 
-		res := u.GetEvent(ctx, param)
+		res := u.connpassEvent.Get(param)
 
 		for _, e := range res.Events {
-			sl, _ := utils.NewSlack(webhookURL)
+			sl, _ := slackUtils.NewSlack(webhookURL)
 
-			sl.SendToSlack(e.EventURL, func() bool { return e.Accepted >= nop }())
+			sendable := e.Accepted >= nop
+			sl.SendToSlack(e.EventURL, sendable, func(attachment *slack.Attachment) {
+				attachment.AddField(slack.Field{Title: "タイトル", Value: e.Title}).AddField(slack.Field{Title: "人数", Value: strconv.Itoa(e.Accepted)}).AddField(slack.Field{Title: "場所", Value: e.Address})
+			})
 		}
 	}
 }

@@ -28,7 +28,7 @@ func GetEvent(c *gin.Context) {
 	param.YmdList = body.YmdList
 
 	ce := connpassEvent.NewConnpassEvent()
-	u := usecase.NewConnpassEventImpl(ce)
+	u := usecase.NewGetEventImpl(ce)
 	ctx := context.Background()
 	// ctx = context.WithValue(ctx, "tx", db)
 	res := u.GetEvent(ctx, param)

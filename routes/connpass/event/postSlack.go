@@ -14,10 +14,6 @@ import (
 // curl -H "Content-type:application/json" "Accept:application/json" -d '' -X POST http://localhost:7777/connpass/slack
 
 func PostSlack(c *gin.Context) {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
 	var res string
 
 	webhookURL := os.Getenv("WEB_HOOK_URL")
@@ -38,7 +34,7 @@ func PostSlack(c *gin.Context) {
 	nop, _ := strconv.Atoi(numOfPeople)
 
 	ce := connpassEvent.NewConnpassEvent()
-	u := usecase.NewConnpassEventImpl(ce)
+	u := usecase.NewPostSlackImpl(ce)
 	ctx := context.Background()
 
 	if webhookURL != "" && searchRange != "" && numOfPeople != "" {
