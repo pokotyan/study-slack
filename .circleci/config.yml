@@ -33,7 +33,7 @@ jobs:
       - run: go get -u golang.org/x/lint/golint
       - run: golint ./...
 workflows:
-  build_and_push:
+  build_and_lint:
     jobs:
       - build
       - lint
