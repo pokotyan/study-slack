@@ -3,8 +3,8 @@ package event
 import (
 	"context"
 
-	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
-	slackUtils "github.com/pokotyan/connpass-map-api/utils/slack"
+	connpassEvent "github.com/pokotyan/study-slack/infrastructure/connpass/event"
+	slackUtils "github.com/pokotyan/study-slack/utils/slack"
 )
 
 type (

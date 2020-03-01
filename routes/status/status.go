@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	usecase "github.com/pokotyan/connpass-map-api/usecase/status"
+	usecase "github.com/pokotyan/study-slack/usecase/status"
 )
 
 func Handler(c *gin.Context) {

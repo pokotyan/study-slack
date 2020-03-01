@@ -1,7 +1,7 @@
 package main
 
 import (
-	cmd "github.com/pokotyan/connpass-map-api/cmd/cobra"
+	cmd "github.com/pokotyan/study-slack/cmd/cobra"
 )
 
 func main() {

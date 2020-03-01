@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/joho/godotenv"
-	"github.com/pokotyan/connpass-map-api/server"
+	"github.com/pokotyan/study-slack/server"
 )
 
 func main() {

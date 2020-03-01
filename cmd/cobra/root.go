@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/pokotyan/connpass-map-api/cmd/cobra/connpass"
+	"github.com/pokotyan/study-slack/cmd/cobra/connpass"
 	"github.com/spf13/cobra"
 )
 

@@ -2,9 +2,9 @@ package connpassrouter
 
 import (
 	"github.com/gin-gonic/gin"
-	middleware "github.com/pokotyan/connpass-map-api/middleware/logging"
-	"github.com/pokotyan/connpass-map-api/routes/connpass/env"
-	"github.com/pokotyan/connpass-map-api/routes/connpass/event"
+	middleware "github.com/pokotyan/study-slack/middleware/logging"
+	"github.com/pokotyan/study-slack/routes/connpass/env"
+	"github.com/pokotyan/study-slack/routes/connpass/event"
 )
 
 func Init(router *gin.Engine) {

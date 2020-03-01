@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/pokotyan/connpass-map-api/infrastructure/connpass/request"
+	"github.com/pokotyan/study-slack/infrastructure/connpass/request"
 )
 
 type (

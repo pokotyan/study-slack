@@ -12,9 +12,3 @@ services:
       - API_VERSION=development
     ports:
       - 7777:7777
-  nginx:
-    build: nginx
-    ports:
-      - 80:80
-    depends_on:
-      - app

@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nlopes/slack"
 
-	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/env"
+	usecase "github.com/pokotyan/study-slack/usecase/connpass/env/openDialog"
 )
 
 type Payload struct {

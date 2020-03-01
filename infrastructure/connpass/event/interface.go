@@ -1,7 +1,7 @@
 package event
 
 import (
-	eventModel "github.com/pokotyan/connpass-map-api/domain/connpass/model/event"
+	eventModel "github.com/pokotyan/study-slack/domain/connpass/model/event"
 )
 
 type (

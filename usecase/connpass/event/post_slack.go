@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/ashwanthkumar/slack-go-webhook"
-	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
-	slackUtils "github.com/pokotyan/connpass-map-api/utils/slack"
+	connpassEvent "github.com/pokotyan/study-slack/infrastructure/connpass/event"
+	slackUtils "github.com/pokotyan/study-slack/utils/slack"
 )
 
 func NewPostSlackImpl(connpassEvent connpassEvent.ConnpassEvent, slackClient *slackUtils.Slack) ConnpassEventUsecase {

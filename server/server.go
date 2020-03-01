@@ -3,7 +3,7 @@ package server
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	routes "github.com/pokotyan/connpass-map-api/routes"
+	routes "github.com/pokotyan/study-slack/routes"
 )
 
 func Init() {
