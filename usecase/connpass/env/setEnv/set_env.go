@@ -2,7 +2,6 @@ package env
 
 import (
 	"context"
-	"net/url"
 	"strconv"
 
 	settingRepo "github.com/pokotyan/study-slack/repository/setting"
@@ -22,15 +21,10 @@ func NewSetEnvImpl(sr settingRepo.SettingRepository) ConnpassEnvUsecase {
 
 func (c *connpassEnvUsecaseImpl) SetEnv(ctx context.Context, rawBody string) []EnvError {
 	message := slackUtils.ParseSubmissionCallBack(rawBody)
-	webhookURL := slackUtils.GetSubmissionValue(message, "WEB_HOOK_URL")
 	searchRange := slackUtils.GetSubmissionValue(message, "SEARCH_RANGE")
 	numOfPeople := slackUtils.GetSubmissionValue(message, "NUM_OF_PEOPLE")
 
 	Errors := []EnvError{}
-
-	if _, err := url.ParseRequestURI(webhookURL); err != nil {
-		Errors = append(Errors, EnvError{Msg: "有効なURLではありません。", ID: "WEB_HOOK_URL"})
-	}
 
 	sr, err := strconv.Atoi(searchRange)
 	if err != nil {

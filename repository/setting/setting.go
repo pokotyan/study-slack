@@ -47,13 +47,6 @@ func (*settingRepository) MakeDialog(s models.SettingHistory, userID string) *sl
 		SubmitLabel: "Submit",
 		CallbackID:  userID + "EnvForm",
 		Elements: []slack.DialogElement{
-			// slack.DialogInput{
-			// 	Label:       "WEB_HOOK_URL",
-			// 	Type:        slack.InputTypeText,
-			// 	Name:        "WEB_HOOK_URL",
-			// 	Placeholder: os.Getenv("WEB_HOOK_URL"),
-			// 	Hint:        "通知したいチャンネルのwebHookURL",
-			// },
 			slack.DialogInput{
 				Label:       "検索範囲（現在の値: " + strconv.Itoa(s.SearchRange) + ")",
 				Type:        slack.InputTypeText,
