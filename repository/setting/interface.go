@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"github.com/nlopes/slack"
 	"github.com/pokotyan/study-slack/infrastructure/rdb/models"
 )
 
@@ -10,5 +11,6 @@ type (
 	SettingRepository interface {
 		FetchCurrentSetting(ctx context.Context) models.SettingHistory
 		Update(ctx context.Context, searchRange int, numOfPeople int) models.SettingHistory
+		MakeDialog(s models.SettingHistory, userID string) *slack.Dialog
 	}
 )

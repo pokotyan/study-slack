@@ -1,12 +1,15 @@
 package env
 
 import (
+	"context"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nlopes/slack"
 
+	mysql "github.com/pokotyan/study-slack/infrastructure/rdb/client"
+	repository "github.com/pokotyan/study-slack/repository/setting"
 	usecase "github.com/pokotyan/study-slack/usecase/connpass/env/openDialog"
 )
 
@@ -31,12 +34,25 @@ func OpenDialog(c *gin.Context) {
 		return
 	}
 
+	slackClient := slack.New(slackToken)
+	sr := repository.NewSettingRepository()
+	u := usecase.NewOpenDialogImpl(slackClient, sr)
+
+	openDialog(c, u)
+}
+
+func openDialog(c *gin.Context, u usecase.ConnpassEnvUsecase) {
+	db := mysql.Connect()
+	defer db.Close()
+	db.LogMode(true)
+
 	var body Payload
 	c.Bind(&body)
 
-	slackClient := slack.New(slackToken)
-	u := usecase.NewOpenDialogImpl(slackClient)
-	err := u.OpenDialog(c, body.UserID, body.TriggerID)
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "tx", db)
+
+	err := u.OpenDialog(ctx, body.UserID, body.TriggerID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nil)

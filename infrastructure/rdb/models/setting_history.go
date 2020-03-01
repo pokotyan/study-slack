@@ -3,7 +3,7 @@ package models
 import "time"
 
 type SettingHistory struct {
-	ID          int       `json:"id"`
+	ID          int       `json:"id" gorm:"primary_key"`
 	SearchRange int       `json:"search_range"`
 	NumOfPeople int       `json:"num_of_people"`
 	CreatedAt   time.Time `json:"created_at"`

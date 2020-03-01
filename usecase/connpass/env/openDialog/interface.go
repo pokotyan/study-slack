@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/nlopes/slack"
+
+	settingRepository "github.com/pokotyan/study-slack/repository/setting"
 )
 
 type (
@@ -12,5 +14,6 @@ type (
 	}
 	connpassEnvUsecaseImpl struct {
 		slackClient *slack.Client
+		settingRepo settingRepository.SettingRepository
 	}
 )

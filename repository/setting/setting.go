@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
+	"strconv"
 	"time"
 
+	"github.com/nlopes/slack"
 	"github.com/pokotyan/study-slack/infrastructure/rdb/models"
 	cc "github.com/pokotyan/study-slack/utils/context"
 )
@@ -37,4 +39,35 @@ func (*settingRepository) Update(ctx context.Context, searchRange int, numOfPeop
 	db.Create(&setting)
 
 	return setting
+}
+
+func (*settingRepository) MakeDialog(s models.SettingHistory, userID string) *slack.Dialog {
+	return &slack.Dialog{
+		Title:       "環境設定",
+		SubmitLabel: "Submit",
+		CallbackID:  userID + "EnvForm",
+		Elements: []slack.DialogElement{
+			// slack.DialogInput{
+			// 	Label:       "WEB_HOOK_URL",
+			// 	Type:        slack.InputTypeText,
+			// 	Name:        "WEB_HOOK_URL",
+			// 	Placeholder: os.Getenv("WEB_HOOK_URL"),
+			// 	Hint:        "通知したいチャンネルのwebHookURL",
+			// },
+			slack.DialogInput{
+				Label:       "検索範囲（現在の値: " + strconv.Itoa(s.SearchRange) + ")",
+				Type:        slack.InputTypeText,
+				Name:        "SEARCH_RANGE",
+				Placeholder: strconv.Itoa(s.SearchRange),
+				Hint:        "数字（日数）。どのくらい先までの勉強会を通知するか。ex) 7にすると１週間先までの勉強会を通知。",
+			},
+			slack.DialogInput{
+				Label:       "最低参加人数（現在の値: " + strconv.Itoa(s.NumOfPeople) + ")",
+				Type:        slack.InputTypeText,
+				Name:        "NUM_OF_PEOPLE",
+				Placeholder: strconv.Itoa(s.NumOfPeople),
+				Hint:        "数字（人数）。ex) 100にすると参加人数が100人以上の勉強会のみ通知。",
+			},
+		},
+	}
 }
