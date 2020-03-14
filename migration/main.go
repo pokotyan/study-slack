@@ -126,7 +126,10 @@ func up(m *migrate.Migrate) {
 	showVersionInfo(m.Version())
 	err := m.Up()
 	if err != nil {
-		panic(err)
+		if err.Error() != "no change" {
+			panic(err)
+		}
+		fmt.Println("\nno change")
 	} else {
 		fmt.Println("\nUpdated:")
 		version, dirty, err := m.Version()
