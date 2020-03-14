@@ -1,6 +1,8 @@
 package server
 
 import (
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	routes "github.com/pokotyan/study-slack/routes"
@@ -17,5 +19,5 @@ func Init() {
 
 	routes.Init(router)
 
-	router.Run(":7777")
+	router.Run(":" + os.Getenv("PORT"))
 }

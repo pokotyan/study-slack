@@ -15,6 +15,7 @@ type DbConf struct {
 	DbName string
 	Host   string
 	Port   string
+	DbURL  string
 }
 
 func Connect() *gorm.DB {
@@ -23,12 +24,14 @@ func Connect() *gorm.DB {
 		panic(err.Error())
 	}
 	DBMS := dc.DbMs
-	USER := dc.User
-	PASS := dc.Pass
-	PROTOCOL := fmt.Sprintf("tcp(%s:%s)", dc.Host, dc.Port)
-	DBNAME := dc.DbName
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?parseTime=true"
+	// USER := dc.User
+	// PASS := dc.Pass
+	// PROTOCOL := fmt.Sprintf("tcp(%s:%s)", dc.Host, dc.Port)
+	// DBNAME := dc.DbName
+	// CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?parseTime=true"
+	CONNECT := dc.DbURL + "?parseTime=true" // heroku対応
 
+	fmt.Println(CONNECT)
 	db, err := gorm.Open(DBMS, CONNECT)
 	if err != nil {
 		panic(err.Error())
@@ -43,6 +46,7 @@ func SetConfig() (dc DbConf, err error) {
 	dc.Pass = os.Getenv("DB_PASSWORD")
 	dc.Host = os.Getenv("DB_HOST")
 	dc.Port = os.Getenv("DB_PORT")
+	dc.DbURL = os.Getenv("DATABASE_URL")
 	return dc, nil
 }
 
