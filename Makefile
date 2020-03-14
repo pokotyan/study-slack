@@ -34,3 +34,7 @@ migrate_status:
 refresh_db:
 	docker-compose run app go run migration/main.go drop && \
 	docker-compose run app go run migration/main.go up
+
+.PHONY: up_migrate_prod
+up_migrate_prod:
+	go run migration/main.go up ${arg}

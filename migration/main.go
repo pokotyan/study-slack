@@ -67,9 +67,8 @@ func newMigrate() *migrate.Migrate {
 
 	// dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, pass, host, port, dbName)
 
-	dbURL := os.Getenv("CLEARDB_DATABASE_URL")
-
-	dsn := dbURL + "?parseTime=true" // heroku対応
+	dbURL := os.Getenv("CLEARDB_DATABASE_URL") // heroku対応
+	dsn := dbURL + "?parseTime=true"
 
 	fmt.Println(dsn)
 
