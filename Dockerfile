@@ -1,8 +1,9 @@
 #開発用 docker-compose用
-FROM heroku/heroku:18 as builder
+FROM golang:alpine as builder
 
 RUN apk update \
   && apk add --no-cache git \
+  && apk add --no-cache curl \
   && go get github.com/oxequa/realize
 
 WORKDIR /app
