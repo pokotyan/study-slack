@@ -20,6 +20,7 @@ import (
 var migrationFilePath = "file://./migration/migrations/"
 
 func main() {
+	fmt.Println("start migration")
 	flag.Parse()
 	if flag.Arg(0) == "" {
 		showUsage()
