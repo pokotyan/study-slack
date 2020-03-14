@@ -3,7 +3,7 @@ package event
 import (
 	"context"
 
-	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
+	connpassEvent "github.com/pokotyan/study-slack/infrastructure/connpass/event"
 )
 
 func NewGetEventImpl(connpassEvent connpassEvent.ConnpassEvent) ConnpassEventUsecase {

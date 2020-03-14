@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  app:
+    image: "882275384674.dkr.ecr.ap-northeast-1.amazonaws.com/study-slack-app:${SHA1}"
+    environment:
+      - API_VERSION="${SHA1}"
+    ports:
+      - 7777:7777

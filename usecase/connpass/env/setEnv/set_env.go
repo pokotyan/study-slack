@@ -2,11 +2,10 @@ package env
 
 import (
 	"context"
-	"net/url"
-	"os"
 	"strconv"
 
-	slackUtils "github.com/pokotyan/connpass-map-api/utils/slack"
+	settingRepo "github.com/pokotyan/study-slack/repository/setting"
+	slackUtils "github.com/pokotyan/study-slack/utils/slack"
 )
 
 type EnvError struct {
@@ -14,17 +13,19 @@ type EnvError struct {
 	ID  string
 }
 
-func SetEnv(ctx context.Context, rawBody string) []EnvError {
+func NewSetEnvImpl(sr settingRepo.SettingRepository) ConnpassEnvUsecase {
+	return &connpassEnvUsecaseImpl{
+		settingRepo: sr,
+	}
+}
+
+func (c *connpassEnvUsecaseImpl) SetEnv(ctx context.Context, rawBody string) []EnvError {
 	message := slackUtils.ParseSubmissionCallBack(rawBody)
-	webhookURL := slackUtils.GetSubmissionValue(message, "WEB_HOOK_URL")
 	searchRange := slackUtils.GetSubmissionValue(message, "SEARCH_RANGE")
 	numOfPeople := slackUtils.GetSubmissionValue(message, "NUM_OF_PEOPLE")
+	word := slackUtils.GetSubmissionValue(message, "WORD")
 
 	Errors := []EnvError{}
-
-	if _, err := url.ParseRequestURI(webhookURL); err != nil {
-		Errors = append(Errors, EnvError{Msg: "有効なURLではありません。", ID: "WEB_HOOK_URL"})
-	}
 
 	sr, err := strconv.Atoi(searchRange)
 	if err != nil {
@@ -35,7 +36,8 @@ func SetEnv(ctx context.Context, rawBody string) []EnvError {
 		Errors = append(Errors, EnvError{Msg: "MAXは30日です。", ID: "SEARCH_RANGE"})
 	}
 
-	if _, err := strconv.Atoi(numOfPeople); err != nil {
+	nop, err := strconv.Atoi(numOfPeople)
+	if err != nil {
 		Errors = append(Errors, EnvError{Msg: "数字で入力してください。", ID: "NUM_OF_PEOPLE"})
 	}
 
@@ -43,9 +45,7 @@ func SetEnv(ctx context.Context, rawBody string) []EnvError {
 		return Errors
 	}
 
-	os.Setenv("WEB_HOOK_URL", webhookURL)
-	os.Setenv("SEARCH_RANGE", searchRange)
-	os.Setenv("NUM_OF_PEOPLE", numOfPeople)
+	c.settingRepo.Update(ctx, sr, nop, word)
 
 	return nil
 }

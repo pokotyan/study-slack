@@ -4,14 +4,16 @@ import (
 	"context"
 
 	"github.com/nlopes/slack"
+
+	settingRepository "github.com/pokotyan/study-slack/repository/setting"
 )
 
 type (
 	ConnpassEnvUsecase interface {
 		OpenDialog(ctx context.Context, userID string, triggerID string) error
-		// SetEnv(ctx context.Context, rawBody string) []EnvError
 	}
 	connpassEnvUsecaseImpl struct {
 		slackClient *slack.Client
+		settingRepo settingRepository.SettingRepository
 	}
 )

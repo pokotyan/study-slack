@@ -9,8 +9,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
-	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/event"
+	connpassEvent "github.com/pokotyan/study-slack/infrastructure/connpass/event"
+	usecase "github.com/pokotyan/study-slack/usecase/connpass/event"
 )
 
 func setDate(reqParam *connpassEvent.ReqParam) func(arg string) {

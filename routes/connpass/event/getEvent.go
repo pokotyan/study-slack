@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	connpassEvent "github.com/pokotyan/connpass-map-api/infrastructure/connpass/event"
-	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/event"
+	connpassEvent "github.com/pokotyan/study-slack/infrastructure/connpass/event"
+	usecase "github.com/pokotyan/study-slack/usecase/connpass/event/getEvent"
 )
 
 // curl -H "Content-type:application/json" "Accept:application/json" -d '{ "Keyword": "python", "YmList": [201209] }' -X POST http://localhost:7777/connpass/event | jq .
@@ -19,6 +19,13 @@ type Body struct {
 }
 
 func GetEvent(c *gin.Context) {
+	ce := connpassEvent.NewConnpassEvent()
+	u := usecase.NewGetEventImpl(ce)
+
+	getEvent(c, u)
+}
+
+func getEvent(c *gin.Context, u usecase.ConnpassEventUsecase) {
 	var body Body
 	c.BindJSON(&body)
 
@@ -27,10 +34,7 @@ func GetEvent(c *gin.Context) {
 	param.YmList = body.YmList
 	param.YmdList = body.YmdList
 
-	ce := connpassEvent.NewConnpassEvent()
-	u := usecase.NewGetEventImpl(ce)
 	ctx := context.Background()
-	// ctx = context.WithValue(ctx, "tx", db)
 	res := u.GetEvent(ctx, param)
 
 	c.JSON(http.StatusOK, res)

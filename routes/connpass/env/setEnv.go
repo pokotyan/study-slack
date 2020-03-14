@@ -1,12 +1,15 @@
 package env
 
 import (
+	"context"
 	"net/http"
-	"net/url"
 
 	"github.com/gin-gonic/gin"
 
-	usecase "github.com/pokotyan/connpass-map-api/usecase/connpass/env"
+	mysql "github.com/pokotyan/study-slack/infrastructure/rdb/client"
+	repository "github.com/pokotyan/study-slack/repository/setting"
+	usecase "github.com/pokotyan/study-slack/usecase/connpass/env/setEnv"
+	gu "github.com/pokotyan/study-slack/utils/gin"
 )
 
 type Error struct {
@@ -18,12 +21,21 @@ type Empty struct{}
 // curl -H "Content-type:application/json" "Accept:application/json" -d '{ "web_hook_url": "https://hooks.slack.com/services/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", "search_range": "2", "num_of_people": "100" }' -X POST http://localhost:7777/env
 
 func Set(c *gin.Context) {
-	buf := make([]byte, 2048)
-	n, _ := c.Request.Body.Read(buf)
-	b := string(buf[0:n])
-	str, _ := url.QueryUnescape(b)
+	sr := repository.NewSettingRepository()
+	u := usecase.NewSetEnvImpl(sr)
 
-	errors := usecase.SetEnv(c, str)
+	set(c, u)
+}
+
+func set(c *gin.Context, u usecase.ConnpassEnvUsecase) {
+	db := mysql.Connect()
+	defer db.Close()
+	db.LogMode(true)
+
+	str := gu.GetRawBody(c)
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "tx", db)
+	errors := u.SetEnv(ctx, str)
 
 	validationErrors := []Error{}
 

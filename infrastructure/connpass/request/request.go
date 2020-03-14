@@ -3,7 +3,7 @@ package request
 import (
 	"log"
 
-	Request "github.com/pokotyan/connpass-map-api/infrastructure/request"
+	Request "github.com/pokotyan/study-slack/infrastructure/request"
 )
 
 type Params map[string]interface{}

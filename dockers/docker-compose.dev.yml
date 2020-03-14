@@ -1,0 +1,27 @@
+version: "3.5"
+
+services:
+  mysql:
+    container_name: push_study_db
+    image: mysql:5.7.22
+    volumes:
+      - ./mysql/:/docker-entrypoint-initdb.d/
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      # - ./tmp/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 4306:3306
+  app:
+    build:
+      context: ..
+      target: builder
+    volumes:
+      - ../:/app
+    command: realize start --server
+    environment:
+      - API_VERSION=development
+    ports:
+      - 7777:7777
+    depends_on:
+      - mysql
