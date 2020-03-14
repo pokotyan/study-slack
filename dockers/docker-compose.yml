@@ -14,10 +14,10 @@ services:
       - 4306:3306
   app:
     build:
-      context: .
+      context: ..
       target: builder
     volumes:
-      - ./:/app
+      - ../:/app
     command: realize start --server
     environment:
       - API_VERSION=development
