@@ -23,6 +23,7 @@ func (c *connpassEnvUsecaseImpl) SetEnv(ctx context.Context, rawBody string) []E
 	message := slackUtils.ParseSubmissionCallBack(rawBody)
 	searchRange := slackUtils.GetSubmissionValue(message, "SEARCH_RANGE")
 	numOfPeople := slackUtils.GetSubmissionValue(message, "NUM_OF_PEOPLE")
+	word := slackUtils.GetSubmissionValue(message, "WORD")
 
 	Errors := []EnvError{}
 
@@ -44,7 +45,7 @@ func (c *connpassEnvUsecaseImpl) SetEnv(ctx context.Context, rawBody string) []E
 		return Errors
 	}
 
-	c.settingRepo.Update(ctx, sr, nop)
+	c.settingRepo.Update(ctx, sr, nop, word)
 
 	return nil
 }

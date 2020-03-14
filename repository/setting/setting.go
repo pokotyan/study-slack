@@ -27,12 +27,13 @@ func (*settingRepository) FetchCurrentSetting(ctx context.Context) models.Settin
 	return setting
 }
 
-func (*settingRepository) Update(ctx context.Context, searchRange int, numOfPeople int) models.SettingHistory {
+func (*settingRepository) Update(ctx context.Context, searchRange int, numOfPeople int, word string) models.SettingHistory {
 	db, _ := cc.GetDB(ctx)
 
 	setting := models.SettingHistory{}
 	setting.SearchRange = searchRange
 	setting.NumOfPeople = numOfPeople
+	setting.Word = word
 	setting.CreatedAt = time.Now()
 	setting.UpdatedAt = time.Now()
 
@@ -60,6 +61,14 @@ func (*settingRepository) MakeDialog(s models.SettingHistory, userID string) *sl
 				Name:        "NUM_OF_PEOPLE",
 				Placeholder: strconv.Itoa(s.NumOfPeople),
 				Hint:        "数字（人数）。ex) 100にすると参加人数が100人以上の勉強会のみ通知。",
+			},
+			slack.DialogInput{
+				Label:       "検索ワード（現在の値: " + s.Word + ")",
+				Type:        slack.InputTypeText,
+				Name:        "WORD",
+				Placeholder: s.Word,
+				Hint:        "検索ワード（省略可）",
+				Optional:    true,
 			},
 		},
 	}
