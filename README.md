@@ -1,9 +1,3 @@
-# ローカルで起動
-```
-make run
-make up_migrate # 「push_study」データベースをローカルに作成したのちに実行
-```
-
 # dockerで起動
 ```
 make start
