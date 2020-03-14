@@ -46,7 +46,7 @@ func SetConfig() (dc DbConf, err error) {
 	dc.Pass = os.Getenv("DB_PASSWORD")
 	dc.Host = os.Getenv("DB_HOST")
 	dc.Port = os.Getenv("DB_PORT")
-	dc.DbURL = os.Getenv("DATABASE_URL")
+	dc.DbURL = os.Getenv("CLEARDB_DATABASE_URL")
 	return dc, nil
 }
 
