@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	connpassEvent "github.com/pokotyan/study-slack/infrastructure/connpass/event"
-	usecase "github.com/pokotyan/study-slack/usecase/connpass/event"
+	usecase "github.com/pokotyan/study-slack/usecase/connpass/event/getEvent"
 )
 
 // curl -H "Content-type:application/json" "Accept:application/json" -d '{ "Keyword": "python", "YmList": [201209] }' -X POST http://localhost:7777/connpass/event | jq .

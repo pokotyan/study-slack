@@ -42,6 +42,10 @@ func (*settingRepository) Update(ctx context.Context, searchRange int, numOfPeop
 	return setting
 }
 
+func (*settingRepository) IsConfigured(s models.SettingHistory) bool {
+	return s.SearchRange != 0 && s.NumOfPeople != 0
+}
+
 func (*settingRepository) MakeDialog(s models.SettingHistory, userID string) *slack.Dialog {
 	return &slack.Dialog{
 		Title:       "環境設定",

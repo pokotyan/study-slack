@@ -10,7 +10,6 @@ import (
 type (
 	ConnpassEventUsecase interface {
 		GetEvent(ctx context.Context, param connpassEvent.ReqParam) connpassEvent.Res
-		PostSlack(ctx context.Context, nop int, searchRange int)
 	}
 	connpassEventUsecaseImpl struct {
 		connpassEvent connpassEvent.ConnpassEvent

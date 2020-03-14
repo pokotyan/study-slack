@@ -4,11 +4,12 @@ import (
 	"context"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	connpassEvent "github.com/pokotyan/study-slack/infrastructure/connpass/event"
-	usecase "github.com/pokotyan/study-slack/usecase/connpass/event"
+	mysql "github.com/pokotyan/study-slack/infrastructure/rdb/client"
+	repository "github.com/pokotyan/study-slack/repository/setting"
+	usecase "github.com/pokotyan/study-slack/usecase/connpass/event/postSlack"
 	slackUtils "github.com/pokotyan/study-slack/utils/slack"
 )
 
@@ -24,31 +25,21 @@ func PostSlack(c *gin.Context) {
 
 	ce := connpassEvent.NewConnpassEvent()
 	sl, _ := slackUtils.NewSlack(webhookURL)
-	u := usecase.NewPostSlackImpl(ce, sl)
+	sr := repository.NewSettingRepository()
+	u := usecase.NewPostSlackImpl(ce, sl, sr)
 
 	postSlack(c, u)
 }
 
 func postSlack(c *gin.Context, u usecase.ConnpassEventUsecase) {
-	var res string
-
-	searchRange := os.Getenv("SEARCH_RANGE")
-	if searchRange == "" {
-		res += " SEARCH_RANGE is not found."
-	}
-	sr, _ := strconv.Atoi(searchRange)
-
-	numOfPeople := os.Getenv("NUM_OF_PEOPLE")
-	if numOfPeople == "" {
-		res += " NUM_OF_PEOPLE is not found."
-	}
-	nop, _ := strconv.Atoi(numOfPeople)
+	db := mysql.Connect()
+	defer db.Close()
+	db.LogMode(true)
 
 	ctx := context.Background()
+	ctx = context.WithValue(ctx, "tx", db)
 
-	if searchRange != "" && numOfPeople != "" {
-		u.PostSlack(ctx, nop, sr)
-	}
+	u.PostSlack(ctx)
 
-	c.JSON(http.StatusOK, res)
+	c.JSON(http.StatusOK, nil)
 }
