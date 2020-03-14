@@ -2,8 +2,7 @@
 FROM golang:alpine as builder
 
 RUN apk update \
-  && apk add --no-cache git \
-  && apk add --no-cache curl \
+  && apk add --no-cache git curl make gcc g++ \
   && go get github.com/oxequa/realize
 
 WORKDIR /app
