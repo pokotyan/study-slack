@@ -9,12 +9,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
-	"github.com/pkg/errors"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/mysql"
 	_ "github.com/golang-migrate/migrate/source/file"
+	"github.com/joho/godotenv"
+	"github.com/pkg/errors"
 )
 
 var migrationFilePath = "file://./migration/migrations/"
@@ -59,13 +59,17 @@ func newMigrate() *migrate.Migrate {
 		os.Exit(1)
 	}
 
-	user := os.Getenv("DB_USERNAME")
-	pass := os.Getenv("DB_PASSWORD")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_DATABASE")
+	// user := os.Getenv("DB_USERNAME")
+	// pass := os.Getenv("DB_PASSWORD")
+	// host := os.Getenv("DB_HOST")
+	// port := os.Getenv("DB_PORT")
+	// dbName := os.Getenv("DB_DATABASE")
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, pass, host, port, dbName)
+	// dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, pass, host, port, dbName)
+
+	dbURL := os.Getenv("CLEARDB_DATABASE_URL")
+
+	dsn := dbURL + "?parseTime=true" // heroku対応
 
 	fmt.Println(dsn)
 
