@@ -37,4 +37,4 @@ refresh_db:
 
 .PHONY: up_migrate_prod
 up_migrate_prod:
-	go run migration/main.go up ${arg}
+	go run migration/main.go up prod

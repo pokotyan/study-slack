@@ -21,11 +21,19 @@ var migrationFilePath = "file://./migration/migrations/"
 
 func main() {
 	fmt.Println("start migration")
-	// flag.Parse()
-	// if flag.Arg(0) == "" {
-	// 	showUsage()
-	// 	os.Exit(1)
-	// }
+	flag.Parse()
+	if flag.Arg(0) == "" {
+		showUsage()
+		os.Exit(1)
+	}
+
+	if flag.Arg(1) != "prod" {
+		err := godotenv.Load()
+		if err != nil {
+			fmt.Println("load error .env")
+			os.Exit(1)
+		}
+	}
 
 	m := newMigrate()
 	version, dirty, _ := m.Version()
@@ -54,11 +62,6 @@ func main() {
 }
 
 func newMigrate() *migrate.Migrate {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Errorf("err %s", "load error .env")
-		os.Exit(1)
-	}
 
 	// user := os.Getenv("DB_USERNAME")
 	// pass := os.Getenv("DB_PASSWORD")
