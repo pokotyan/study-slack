@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/jinzhu/gorm"
@@ -29,10 +28,8 @@ func Connect() *gorm.DB {
 	// PROTOCOL := fmt.Sprintf("tcp(%s:%s)", dc.Host, dc.Port)
 	// DBNAME := dc.DbName
 	// CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?parseTime=true"
-	CONNECT := dc.DbURL + "?parseTime=true" // heroku対応
 
-	fmt.Println(CONNECT)
-	db, err := gorm.Open(DBMS, CONNECT)
+	db, err := gorm.Open(DBMS, dc.DbURL)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -46,7 +43,7 @@ func SetConfig() (dc DbConf, err error) {
 	dc.Pass = os.Getenv("DB_PASSWORD")
 	dc.Host = os.Getenv("DB_HOST")
 	dc.Port = os.Getenv("DB_PORT")
-	dc.DbURL = os.Getenv("DATABASE_URL")
+	dc.DbURL = os.Getenv("DATABASE_URL") // heroku対応
 	return dc, nil
 }
 
