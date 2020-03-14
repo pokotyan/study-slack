@@ -1,5 +1,5 @@
 #開発用 docker-compose用
-FROM golang:alpine as builder
+FROM heroku/heroku:18 as builder
 
 RUN apk update \
   && apk add --no-cache git \
