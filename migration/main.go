@@ -72,11 +72,10 @@ func newMigrate() *migrate.Migrate {
 	// dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, pass, host, port, dbName)
 
 	dbURL := os.Getenv("DATABASE_URL") // heroku対応
-	dsn := dbURL + "?parseTime=true"
 
-	fmt.Println(dsn)
+	fmt.Println(dbURL)
 
-	db, _ := sql.Open("mysql", dsn)
+	db, _ := sql.Open("mysql", dbURL)
 	driver, _ := mysql.WithInstance(db, &mysql.Config{})
 	m, err := migrate.NewWithDatabaseInstance(
 		migrationFilePath,
