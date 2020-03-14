@@ -21,11 +21,11 @@ var migrationFilePath = "file://./migration/migrations/"
 
 func main() {
 	fmt.Println("start migration")
-	flag.Parse()
-	if flag.Arg(0) == "" {
-		showUsage()
-		os.Exit(1)
-	}
+	// flag.Parse()
+	// if flag.Arg(0) == "" {
+	// 	showUsage()
+	// 	os.Exit(1)
+	// }
 
 	m := newMigrate()
 	version, dirty, _ := m.Version()
