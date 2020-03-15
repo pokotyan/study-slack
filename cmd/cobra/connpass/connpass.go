@@ -34,7 +34,7 @@ func newPostSlackCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "slack",
 		Short: "slackに勉強会を通知",
-		RunE:  postSlack,
+		RunE:  PostSlack,
 	}
 
 	return cmd
