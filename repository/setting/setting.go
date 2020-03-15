@@ -48,30 +48,30 @@ func (*settingRepository) IsConfigured(s models.SettingHistory) bool {
 
 func (*settingRepository) MakeDialog(s models.SettingHistory, userID string) *slack.Dialog {
 	return &slack.Dialog{
-		Title:       "環境設定",
+		Title:       "勉強会通知の環境設定",
 		SubmitLabel: "Submit",
 		CallbackID:  userID + "EnvForm",
 		Elements: []slack.DialogElement{
 			slack.DialogInput{
-				Label:       "検索範囲（現在の値: " + strconv.Itoa(s.SearchRange) + ")",
+				Label:       "検索日数範囲（現在の値: " + strconv.Itoa(s.SearchRange) + ")",
 				Type:        slack.InputTypeText,
 				Name:        "SEARCH_RANGE",
 				Placeholder: strconv.Itoa(s.SearchRange),
-				Hint:        "数字（日数）。どのくらい先までの勉強会を通知するか。ex) 7にすると１週間先までの勉強会を通知。",
+				Hint:        "日数（数字）。どの程度先までの勉強会を通知するか。ex) 7にすると１週間先までの勉強会を通知。",
 			},
 			slack.DialogInput{
 				Label:       "最低参加人数（現在の値: " + strconv.Itoa(s.NumOfPeople) + ")",
 				Type:        slack.InputTypeText,
 				Name:        "NUM_OF_PEOPLE",
 				Placeholder: strconv.Itoa(s.NumOfPeople),
-				Hint:        "数字（人数）。ex) 100にすると参加人数が100人以上の勉強会のみ通知。",
+				Hint:        "人数（数字）。ex) 100にすると参加人数が100人以上の勉強会のみ通知。",
 			},
 			slack.DialogInput{
 				Label:       "検索ワード（現在の値: " + s.Word + ")",
 				Type:        slack.InputTypeText,
 				Name:        "WORD",
 				Placeholder: s.Word,
-				Hint:        "検索ワード（省略可）",
+				Hint:        "指定したいキーワード",
 				Optional:    true,
 			},
 		},
