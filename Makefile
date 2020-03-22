@@ -1,6 +1,6 @@
 .PHONY: run
 run:
-	go run main.go
+	go run main.go web
 
 .PHONY: start
 start:

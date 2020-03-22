@@ -2,8 +2,11 @@
 FROM golang:alpine as builder
 
 RUN apk update \
-  && apk add --no-cache git curl make gcc g++ \
-  && go get github.com/oxequa/realize
+  && apk add --no-cache git curl make gcc g++
+
+# Air インストール
+RUN go get -u github.com/cosmtrek/air \
+  && chmod +x /go/bin/air
 
 WORKDIR /app
 COPY go.mod .
@@ -20,4 +23,4 @@ FROM alpine:3.9
 COPY --from=builder /main .
 
 ENV PORT=${PORT}
-ENTRYPOINT ["/main"]
+ENTRYPOINT ["/main web"]
