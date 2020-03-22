@@ -1,10 +1,12 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-
 	"github.com/joho/godotenv"
 	"github.com/pokotyan/study-slack/server"
+
+	cmd "github.com/pokotyan/study-slack/cmd/cobra"
 )
 
 func main() {
@@ -13,5 +15,13 @@ func main() {
 		fmt.Errorf("err %s", "load error .env")
 	}
 
-	server.Init()
+	flag.Parse()
+
+	switch flag.Arg(0) {
+	case "web":
+		server.Init()
+	default:
+		cmd.Execute()
+
+	}
 }
