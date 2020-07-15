@@ -88,13 +88,13 @@ func newMigrate() *migrate.Migrate {
 
 	db, openErr := sql.Open("mysql", dsn)
 	if openErr != nil {
-		fmt.Println(errors.Wrap(openErr, "error occured. sql.Open()"))
+		fmt.Println(errors.Wrap(openErr, "error occurred. sql.Open()"))
 		os.Exit(1)
 	}
 
 	driver, instanceErr := mysql.WithInstance(db, &mysql.Config{})
 	if instanceErr != nil {
-		fmt.Println(errors.Wrap(instanceErr, "error occured. mysql.WithInstance()"))
+		fmt.Println(errors.Wrap(instanceErr, "error occurred. mysql.WithInstance()"))
 		os.Exit(1)
 	}
 
@@ -105,7 +105,7 @@ func newMigrate() *migrate.Migrate {
 	)
 
 	if err != nil {
-		fmt.Println(errors.Wrap(err, "error occured. migrate.NewWithDatabaseInstance()"))
+		fmt.Println(errors.Wrap(err, "error occurred. migrate.NewWithDatabaseInstance()"))
 		os.Exit(1)
 	}
 	return m
