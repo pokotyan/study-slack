@@ -9,7 +9,7 @@ import (
 )
 
 func Handler(c *gin.Context) {
-	apiVer := os.Getenv("API_VERSION")
+	apiVer := os.Getenv("API_REVISION")
 	status := usecase.GetCurrentStatus()
 
 	c.Writer.Header().Set("X-Api-Revision", apiVer)

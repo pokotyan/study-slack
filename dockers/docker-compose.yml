@@ -1,17 +1,17 @@
 version: "3.5"
 
 services:
-  mysql:
+  db:
     container_name: push_study_db
     image: mysql:5.7.22
     volumes:
       - ./mysql/:/docker-entrypoint-initdb.d/
       - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-      # - ./tmp/mysql:/var/lib/mysql
+      - ./mysql/data:/var/lib/mysql
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     ports:
-      - 4306:3306
+      - 3306:3306
   app:
     build:
       context: ..
@@ -20,8 +20,8 @@ services:
       - ../:/app
     command: air
     environment:
-      - API_VERSION=development
+      - API_REVISION=development
     ports:
       - 7777:7777
     depends_on:
-      - mysql
+      - db

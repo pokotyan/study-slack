@@ -12,29 +12,29 @@ lint:
 
 .PHONY: gen_migration
 gen_migration:
-	go run migration/main.go new ${name}
+	go run migration/main.go new ${FILENAME}
 
 .PHONY: up_migrate
 up_migrate:
-	docker-compose -f dockers/docker-compose.yml run app go run migration/main.go up ${arg}
+	go run migration/main.go up ${ARG}
 
 .PHONY: down_migrate
 down_migrate:
-	docker-compose -f dockers/docker-compose.yml run app go run migration/main.go down ${arg}
+	go run migration/main.go down ${ARG}
 
 .PHONY: drop_migrate
 drop_migrate:
-	docker-compose -f dockers/docker-compose.yml run app go run migration/main.go drop
+	go run migration/main.go drop
 
 .PHONY: migrate_status
 migrate_status:
-	docker-compose -f dockers/docker-compose.yml run app go run migration/main.go version
+	go run migration/main.go version
 
 .PHONY: refresh_db
 refresh_db:
-	docker-compose -f dockers/docker-compose.yml run app go run migration/main.go drop && \
-	docker-compose -f dockers/docker-compose.yml run app go run migration/main.go up
+	go run migration/main.go drop && \
+	go run migration/main.go up
 
 .PHONY: up_migrate_prod
 up_migrate_prod:
-	go run migration/main.go up prod
+	API_REVISION=release go run migration/main.go up

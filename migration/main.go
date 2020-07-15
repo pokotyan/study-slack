@@ -1,5 +1,8 @@
-// シンプルな例: https://github.com/golang-migrate/migrate/tree/master/database/mysql
-// パクってきた例: https://github.com/k-yomo/go_echo_api_boilerplate/blob/57ea72eb4e/config/db.go
+// シンプルな例:
+// https://github.com/golang-migrate/migrate/tree/master/database/mysql
+// パクってきた例:
+// https://github.com/k-yomo/go_echo_api_boilerplate/blob/57ea72eb4e/config/db.go
+// https://github.com/k-yomo/go_echo_api_boilerplate/blob/57ea72eb4ef8ca490b1b801aac9b279a391b3597/cmd/db/migrate.go
 package main
 
 import (
@@ -22,17 +25,17 @@ var migrationFilePath = "file://./migration/migrations/"
 func main() {
 	fmt.Println("start migration")
 	flag.Parse()
-	if flag.Arg(0) == "" {
+	command := flag.Arg(0)
+	migrationFileName := flag.Arg(1)
+
+	if command == "" {
 		showUsage()
 		os.Exit(1)
 	}
 
-	if flag.Arg(1) != "prod" {
-		err := godotenv.Load()
-		if err != nil {
-			fmt.Println("load error .env")
-			os.Exit(1)
-		}
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println(errors.Wrap(err, "load error .env"))
 	}
 
 	m := newMigrate()
@@ -43,9 +46,9 @@ func main() {
 		m.Force(int(version))
 	}
 
-	switch flag.Arg(0) {
+	switch command {
 	case "new":
-		newMigration(flag.Arg(1))
+		newMigration(migrationFileName)
 	case "up":
 		up(m)
 	case "down":
@@ -55,28 +58,46 @@ func main() {
 	case "version":
 		showVersionInfo(m.Version())
 	default:
-		fmt.Println("\nerror: invalid command '", flag.Arg(0), "'")
+		fmt.Println("\nerror: invalid command '", command, "'")
 		showUsage()
 		os.Exit(0)
 	}
 }
 
+func generateDsn() string {
+	apiRevision := os.Getenv("API_REVISION")
+	var dsn string
+
+	if apiRevision == "release" {
+		dsn = os.Getenv("DATABASE_URL") // heroku対応
+	} else {
+		user := os.Getenv("DB_USERNAME")
+		pass := os.Getenv("DB_PASSWORD")
+		host := os.Getenv("DB_HOST")
+		port := os.Getenv("DB_PORT")
+		dbName := os.Getenv("DB_DATABASE")
+
+		dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, pass, host, port, dbName)
+	}
+
+	return dsn
+}
+
 func newMigrate() *migrate.Migrate {
+	dsn := generateDsn()
 
-	// user := os.Getenv("DB_USERNAME")
-	// pass := os.Getenv("DB_PASSWORD")
-	// host := os.Getenv("DB_HOST")
-	// port := os.Getenv("DB_PORT")
-	// dbName := os.Getenv("DB_DATABASE")
+	db, openErr := sql.Open("mysql", dsn)
+	if openErr != nil {
+		fmt.Println(errors.Wrap(openErr, "error occured. sql.Open()"))
+		os.Exit(1)
+	}
 
-	// dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, pass, host, port, dbName)
+	driver, instanceErr := mysql.WithInstance(db, &mysql.Config{})
+	if instanceErr != nil {
+		fmt.Println(errors.Wrap(instanceErr, "error occured. mysql.WithInstance()"))
+		os.Exit(1)
+	}
 
-	dbURL := os.Getenv("DATABASE_URL") // heroku対応
-
-	fmt.Println(dbURL)
-
-	db, _ := sql.Open("mysql", dbURL)
-	driver, _ := mysql.WithInstance(db, &mysql.Config{})
 	m, err := migrate.NewWithDatabaseInstance(
 		migrationFilePath,
 		"mysql",
@@ -84,7 +105,7 @@ func newMigrate() *migrate.Migrate {
 	)
 
 	if err != nil {
-		fmt.Println(errors.Wrap(err, "initialize Migrate instance failed"))
+		fmt.Println(errors.Wrap(err, "error occured. migrate.NewWithDatabaseInstance()"))
 		os.Exit(1)
 	}
 	return m
@@ -94,9 +115,9 @@ func showUsage() {
 	fmt.Println(`
 -------------------------------------
 Usage:
-  go run migrate.go <command>
+  go run migration/main.go <command>
 Commands:
-  new NAME	Create new up & down migration files
+  new FILENAME	Create new up & down migration files
   up		Apply up migrations
   down		Apply down migrations
   drop		Drop everything
